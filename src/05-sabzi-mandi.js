@@ -30,5 +30,21 @@
  *   // => { items: [], totalBill: 0 }
  */
 export function sabziMandiBill(shoppingList, priceList) {
-  // Your code here
+  let items = [];
+
+  for (let s of shoppingList) {
+    if (priceList.hasOwnProperty(s.name) && priceList[s.name] <= 80) {
+      items.push({
+        ...s,
+        cost: priceList[s.name] * s.qty
+      })
+    }
+  }
+
+  return {
+    items,
+    totalBill: items.map(i => i.cost).reduce((acc, ite) => {
+      return acc + ite;
+    }, 0)
+  }
 }

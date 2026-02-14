@@ -38,5 +38,43 @@
  *   // => { selected: [{ color: "golden", length: 5, cost: 250 }], totalLength: 5, totalCost: 250 }
  */
 export function diwaliLightsPlan(lightStrings, budget) {
-  // Your code here
+  if (!Array.isArray(lightStrings) || typeof budget !== 'number' || budget <= 0) return {
+    selected: [],
+    totalLength: 0,
+    totalCost: 0
+  };
+
+  let selected = [];
+  let totalLength = 0;
+  let totalCost = 0;
+
+  let ligCo = {
+    'golden': 50,
+    'multicolor': 40,
+    'white': 30,
+    'else': 35
+  }
+
+  for (let lig of lightStrings) {
+    selected.push({
+      color: lig.color,
+      length: lig.length,
+      cost: ligCo[lig.color] ? lig.length * ligCo[lig.color] : lig.length * ligCo.else
+    });
+
+    totalLength += lig.length;
+    totalCost += ligCo[lig.color] ? ligCo[lig.color] * lig.length : ligCo.else * lig.length;
+  }
+
+  while (totalCost > budget) {
+    let remLig = selected.pop();
+    totalLength -= remLig.length;
+    totalCost -= remLig.cost;
+  }
+
+  return {
+    selected,
+    totalLength,
+    totalCost
+  }
 }
